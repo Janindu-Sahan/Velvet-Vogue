@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Velvet Vogue</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">VELVET VOGUE</a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="shop.html">SHOP</a></li>
+                    <li><a href="contact.html" class="active">CONTACT</a></li>
+                    <li><a href="account.html">ACCOUNT</a></li>
+                    <li><a href="cart.html" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="contact-section">
+        <div class="container">
+            <h1 class="page-title">GET IN TOUCH</h1>
+            <p class="contact-subtitle">Have a question? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+
+            <div class="contact-layout">
+                <div class="contact-info">
+                    <div class="info-card">
+                        <h3>EMAIL</h3>
+                        <p>info@velvetvogue.com</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>PHONE</h3>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>ADDRESS</h3>
+                        <p>123 Fashion Avenue<br>New York, NY 10001<br>United States</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>BUSINESS HOURS</h3>
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
+                    </div>
+                </div>
+
+                <div class="contact-form-container">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Name *</label>
+                            <input type="text" id="contactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email *</label>
+                            <input type="email" id="contactEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactSubject">Subject *</label>
+                            <input type="text" id="contactSubject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Message *</label>
+                            <textarea id="contactMessage" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">SEND MESSAGE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>VELVET VOGUE</h3>
+                    <p>Redefining luxury fashion for modern individuals.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>QUICK LINKS</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>CONTACT</h4>
+                    <p>Email: info@velvetvogue.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Velvet Vogue. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/contact.js"></script>
+</body>
+</html>
