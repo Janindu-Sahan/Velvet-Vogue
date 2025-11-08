@@ -242,6 +242,17 @@ body {
     gap: var(--spacing-lg);
 }
 
+/* Make images inside featured grid responsive */
+.featured-grid img,
+.featured-grid .featured-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover; /* safe when height is set elsewhere */
+}
+
+
+
 .product-card {
     background-color: var(--white);
     border: 1px solid var(--border-color);
@@ -250,7 +261,7 @@ body {
     cursor: pointer;
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: flex;
 }
 
 .product-card:hover {
