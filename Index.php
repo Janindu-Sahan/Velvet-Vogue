@@ -43,12 +43,12 @@
         <div class="container">
             <h2 class="section-title">FEATURED COLLECTIONS</h2>
             <div class="featured-grid" id="featuredProducts">
-                <img src="./assets/images/products/carnage 1.webp" alt="Men's tee 1">
-                <img src="./assets/images/products/carnage 5.webp" alt="Womens tee 1">
-                <img src="./assets/images/products/carnage 7.webp" alt="Men's tee 2">
-                <img src="./assets/images/products/carnage 6.webp" alt="Womens tee 2">
-                <img src="./assets/images/products/carnage 3.webp" alt="Womens tee 2">
-                <img src="./assets/images/products/carnage 10.webp" alt="Womens tee 2">
+                <img src="./assets/images/products/px -tee.jpg" alt="Men's tee 1">
+                <img src="./assets/images/products/Summer Essentials Tee.jpg" alt="Womens tee 1">
+                <img src="./assets/images/products/Legacy Game Tank .jpg" alt="Men's tee 2">
+                <img src="./assets/images/products/Court line Wrap Dress .jpg" alt="Womens tee 2">
+                <img src="./assets/images/products/Essence Washed Zip Up Hoodie.jpg" alt="Womens tee 2">
+                <img src="./assets/images/products/airbond-bra.jpg" alt="Womens tee 2">
             </div>
         </div>
     </section>
