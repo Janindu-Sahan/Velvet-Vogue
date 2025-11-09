@@ -1,11 +1,4 @@
 <?php include 'includes/db_connect.php'; ?>
-
-
-<?php
-$sql = "SELECT id, name, price, image, category FROM products";
-$result = $conn->query($sql);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +9,7 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="assets/css/shop.css">
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-wrapper">
@@ -28,113 +22,45 @@ $result = $conn->query($sql);
                     <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
                 </ul>
                 <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- Shop Section -->
     <section class="shop-section">
         <div class="container">
-            <h1 class="page-title">SHOP ALL</h1>
+            <h2>Our Collection</h2>
+            <div class="product-grid">
+                <?php
+                // Fetch products from database
+                $sql = "SELECT p.*, c.name AS category_name FROM products p 
+                        LEFT JOIN categories c ON p.category_id = c.id
+                        ORDER BY p.id DESC";
+                $result = $conn->query($sql);
 
-            <div class="shop-layout">
-                <aside class="filters-sidebar">
-                    <div class="filters">
-                        <h3>FILTER BY</h3>
-
-                        <div class="filter-group">
-                            <label for="searchInput">SEARCH</label>
-                            <input type="text" id="searchInput" placeholder="Search products...">
+                if ($result && $result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo '
+                        <div class="product-card">
+                            <img src="assets/images/' . htmlspecialchars($row['image'] ?? 'placeholder.jpg') . '" alt="' . htmlspecialchars($row['name']) . '">
+                            <h3>' . htmlspecialchars($row['name']) . '</h3>
+                            <p class="category">' . htmlspecialchars($row['category_name'] ?? 'Uncategorized') . '</p>
+                            <p class="price">$' . number_format($row['price'], 2) . '</p>
+                            <a href="product.php?slug=' . urlencode($row['slug']) . '" class="btn">View Details</a>
                         </div>
-
-                        <div class="filter-group">
-                            <label for="categoryFilter">CATEGORY</label>
-                            <select id="categoryFilter">
-                                <option value="">All Categories</option>
-                                <?php
-                                // Example: dynamically load categories from database
-                                $result = $conn->query("SELECT * FROM categories ORDER BY name ASC");
-                                if ($result && $result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['name']) . '</option>';
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="filter-group">
-                            <label for="genderFilter">GENDER</label>
-                            <select id="genderFilter">
-                                <option value="">All</option>
-                                <option value="Men">Men</option>
-                                <option value="Women">Women</option>
-                                <option value="Unisex">Unisex</option>
-                            </select>
-                        </div>
-
-                        <div class="filter-group">
-                            <label for="sizeFilter">SIZE</label>
-                            <select id="sizeFilter">
-                                <option value="">All Sizes</option>
-                                <option value="XS">XS</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="XXL">XXL</option>
-                            </select>
-                        </div>
-
-                        <div class="filter-group">
-                            <label for="priceFilter">MAX PRICE</label>
-                            <input type="number" id="priceFilter" placeholder="Max price" min="0" step="10">
-                        </div>
-
-                        <div class="filter-group">
-                            <label for="sortFilter">SORT BY</label>
-                            <select id="sortFilter">
-                                <option value="name-asc">Name (A-Z)</option>
-                                <option value="name-desc">Name (Z-A)</option>
-                                <option value="price-asc">Price (Low to High)</option>
-                                <option value="price-desc">Price (High to Low)</option>
-                            </select>
-                        </div>
-
-                        <button class="btn btn-secondary" id="resetFilters" style="width: 100%; margin-top: 16px;">RESET FILTERS</button>
-                    </div>
-                </aside>
-
-                <div class="products-area">
-                    <div class="products-header">
-                        <p id="productCount">Loading...</p>
-                    </div>
-
-                    <div class="products-grid" id="productsGrid">
-                        <?php
-                        // Example: display products from the database
-                        $products = $conn->query("SELECT * FROM products ORDER BY name ASC");
-                        if ($products && $products->num_rows > 0) {
-                            while ($product = $products->fetch_assoc()) {
-                                echo '<div class="product-card">';
-                                echo '<h3>' . htmlspecialchars($product['name']) . '</h3>';
-                                echo '<p>$' . htmlspecialchars($product['price']) . '</p>';
-                                echo '<a href="product.php?id=' . $product['id'] . '" class="btn btn-primary">View</a>';
-                                echo '</div>';
-                            }
-                        } else {
-                            echo '<p>No products available.</p>';
-                        }
-                        ?>
-                    </div>
-                </div>
+                        ';
+                    }
+                } else {
+                    echo '<p>No products found.</p>';
+                }
+                ?>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -163,8 +89,5 @@ $result = $conn->query($sql);
     </footer>
 
     <script type="module" src="assets/js/main.js"></script>
-    <script type="module" src="assets/js/shop.js"></script>
 </body>
 </html>
-
-<?php include 'includes/footer.php'; // optional footer ?>
