@@ -1,7 +1,9 @@
+<?php include 'includes/db_connect.php'; ?>
+
+
 <?php
-// shop.php
-include 'includes/db_connect.php'; // optional: for DB connection
-include 'includes/header.php'; // optional: for shared header/navbar
+$sql = "SELECT id, name, price, image, category FROM products";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>

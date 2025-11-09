@@ -1,6 +1,7 @@
-<?php
-// You can add PHP logic here if needed (like fetching data from database)
-?>
+
+<?php include 'includes/db_connect.php'; ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

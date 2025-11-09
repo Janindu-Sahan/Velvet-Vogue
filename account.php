@@ -1,6 +1,9 @@
 <?php
 // Optional PHP logic can go here (e.g., session handling, login check, etc.)
 ?>
+
+<?php include 'includes/db_connect.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
