@@ -1,3 +1,9 @@
+<?php
+// shop.php
+include 'includes/db_connect.php'; // optional: for DB connection
+include 'includes/header.php'; // optional: for shared header/navbar
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,13 +17,13 @@
     <nav class="navbar">
         <div class="container">
             <div class="nav-wrapper">
-                <a href="index.html" class="logo">VELVET VOGUE</a>
+                <a href="index.php" class="logo">VELVET VOGUE</a>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="shop.html" class="active">SHOP</a></li>
-                    <li><a href="contact.html">CONTACT</a></li>
-                    <li><a href="account.html">ACCOUNT</a></li>
-                    <li><a href="cart.html" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
+                    <li><a href="index.php">HOME</a></li>
+                    <li><a href="shop.php" class="active">SHOP</a></li>
+                    <li><a href="contact.php">CONTACT</a></li>
+                    <li><a href="account.php">ACCOUNT</a></li>
+                    <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
                 </ul>
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -46,6 +52,15 @@
                             <label for="categoryFilter">CATEGORY</label>
                             <select id="categoryFilter">
                                 <option value="">All Categories</option>
+                                <?php
+                                // Example: dynamically load categories from database
+                                $result = $conn->query("SELECT * FROM categories ORDER BY name ASC");
+                                if ($result && $result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['name']) . '</option>';
+                                    }
+                                }
+                                ?>
                             </select>
                         </div>
 
@@ -95,8 +110,23 @@
                     <div class="products-header">
                         <p id="productCount">Loading...</p>
                     </div>
+
                     <div class="products-grid" id="productsGrid">
-                        <div class="loading">Loading products...</div>
+                        <?php
+                        // Example: display products from the database
+                        $products = $conn->query("SELECT * FROM products ORDER BY name ASC");
+                        if ($products && $products->num_rows > 0) {
+                            while ($product = $products->fetch_assoc()) {
+                                echo '<div class="product-card">';
+                                echo '<h3>' . htmlspecialchars($product['name']) . '</h3>';
+                                echo '<p>$' . htmlspecialchars($product['price']) . '</p>';
+                                echo '<a href="product.php?id=' . $product['id'] . '" class="btn btn-primary">View</a>';
+                                echo '</div>';
+                            }
+                        } else {
+                            echo '<p>No products available.</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -113,9 +143,9 @@
                 <div class="footer-section">
                     <h4>QUICK LINKS</h4>
                     <ul>
-                        <li><a href="shop.html">Shop</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="shop.php">Shop</a></li>
+                        <li><a href="contact.php">Contact</a></li>
+                        <li><a href="account.php">My Account</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -134,3 +164,5 @@
     <script type="module" src="assets/js/shop.js"></script>
 </body>
 </html>
+
+<?php include 'includes/footer.php'; // optional footer ?>

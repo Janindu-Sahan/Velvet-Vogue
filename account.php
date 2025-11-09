@@ -1,3 +1,6 @@
+<?php
+// Optional PHP logic can go here (e.g., session handling, login check, etc.)
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,13 +14,13 @@
     <nav class="navbar">
         <div class="container">
             <div class="nav-wrapper">
-                <a href="index.html" class="logo">VELVET VOGUE</a>
+                <a href="index.php" class="logo">VELVET VOGUE</a>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="shop.html">SHOP</a></li>
-                    <li><a href="contact.html">CONTACT</a></li>
-                    <li><a href="account.html" class="active">ACCOUNT</a></li>
-                    <li><a href="cart.html" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
+                    <li><a href="index.php">HOME</a></li>
+                    <li><a href="shop.php">SHOP</a></li>
+                    <li><a href="contact.php">CONTACT</a></li>
+                    <li><a href="account.php" class="active">ACCOUNT</a></li>
+                    <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
                 </ul>
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -195,9 +198,9 @@
                 <div class="footer-section">
                     <h4>QUICK LINKS</h4>
                     <ul>
-                        <li><a href="shop.html">Shop</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="shop.php">Shop</a></li>
+                        <li><a href="contact.php">Contact</a></li>
+                        <li><a href="account.php">My Account</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -207,7 +210,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Velvet Vogue. All rights reserved.</p>
+                <p>&copy; <?php echo date("Y"); ?> Velvet Vogue. All rights reserved.</p>
             </div>
         </div>
     </footer>
