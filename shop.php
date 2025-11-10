@@ -1,16 +1,12 @@
-<?php include 'includes/db_connect.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - Velvet Vogue</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/shop.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <!-- Navbar -->
     <nav class="navbar">
@@ -32,48 +28,51 @@
     </nav>
 
 
-    <!-- All Products Section -->
-    <div class="products-area">
-        <div class="products-header">
-            <p>All Products</p>
+                <!-- Products -->
+                <div class="products-area">
+                    <div class="products-header">
+                        
+                    </div>
+
+                    <div class="products-grid" id="productsGrid">
+                        <?php
+                        $product_images = [
+                            "airbond-bra.jpg",
+                            "Classic-Twil-Cargo- Pant.jpg",
+                            "Court-line-Wrap Dress .jpg",
+                            "Essence-Washed Zip-Up Hoodie.jpg",
+                            "Essence-Washed- Cuffed-Jogger (Unisex).jpg",
+                            "Essential-Cut-Off- Crop.jpg",
+                            "Legacy-Game- Tank .jpg",
+                            "px -tee.jpg",
+                            "Summer-Essentials Tee.jpg",
+                            "Vital-Sculpt Bra.jpg"
+                        ];
+
+                        if (!empty($product_images)) {
+                            foreach ($product_images as $image_file) {
+                                $name = htmlspecialchars(ucwords(str_replace(['-', '.jpg'], [' ', ''], $image_file)));
+                              
+                                $image = 'assets/images/products/' . htmlspecialchars($image_file);
+                                $slug = urlencode(strtolower(str_replace(' ', '-', $name)));
+
+                                echo '<article class="product-card">';
+                                echo '  <a href="product.php?slug=' . $slug . '">';
+                                echo '      <img src="' . $image . '" alt="' . $name . '" class="product-image">';
+                                echo '      <h4 class="product-title">' . $name . '</h4>';
+                               
+                                echo '  </a>';
+                                echo '</article>';
+                            }
+                        } else {
+                            echo '<p>No products found.</p>';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="products-grid">
-            <?php
-            // ✅ Fetch all products
-            $sql = "SELECT * FROM products ORDER BY id DESC";
-            $result = $conn->query($sql);
-
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $name = htmlspecialchars($row['name']);
-                    $price = number_format($row['price'], 2);
-                    $slug = urlencode($row['slug']);
-                    $imageFilename = htmlspecialchars($row['main_image']);
-
-                    // ✅ Correct image path
-                    $imagePath = "assets/images/products/" . $imageFilename;
-
-                    // ✅ Fallback if image doesn’t exist
-                    if (empty($imageFilename) || !file_exists($imagePath)) {
-                        $imagePath = "assets/images/placeholder.jpg";
-                    }
-
-                    echo '
-                    <article class="product-card">
-                        <a href="product.php?slug=' . $slug . '">
-                            <img src="' . $imagePath . '" alt="' . $name . '" class="product-image" loading="lazy">
-                            <h4 class="product-title">' . $name . '</h4>
-                            <p class="price">LKR ' . $price . '</p>
-                        </a>
-                    </article>';
-                }
-            } else {
-                echo "<p>No products found.</p>";
-            }
-            ?>
-        </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -106,5 +105,4 @@
     <script type="module" src="assets/js/main.js"></script>
     <script type="module" src="assets/js/shop.js"></script>
 </body>
-
 </html>

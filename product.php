@@ -52,8 +52,10 @@
                     <div class="product-detail">
                         <div class="product-image-container">
                             <?php
-                            $imgFile = !empty($product['main_image']) ? htmlspecialchars($product['main_
-                            image']) : '';
+                            $imgFile = isset($product['main_image']) && !empty($product['main_image'])
+                            ? htmlspecialchars($product['main_image'])
+                             : '';
+
                                 $imgPath = ($imgFile && file_exists(__DIR__ . '/assets/images/products/' . $imgFile))
                                          ? 'assets/images/products/' . $imgFile
                                             : 'assets/images/placeholder.jpg';

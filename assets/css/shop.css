@@ -55,6 +55,9 @@
 }
 
 .product-card {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 30px;
   background: #fff;
   border: 1px solid #eee;
   border-radius: 12px;
@@ -91,7 +94,7 @@
 
 @media (max-width: 1024px) {
     .shop-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr repeat(3, 1fr);
     }
 
     .filters-sidebar {
@@ -103,9 +106,9 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: 1fr;
         gap: var(--spacing-md);
     }
 
@@ -113,3 +116,5 @@
         font-size: 28px;
     }
 }
+
+

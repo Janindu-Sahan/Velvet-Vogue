@@ -12,7 +12,7 @@ session_start();
     <link rel="stylesheet" href="assets/css/contact.css">
 </head>
 <body>
-    <?php include 'includes/navbar.php'; // Optional include for consistency ?>
+    
 
     <section class="contact-section">
         <div class="container">
