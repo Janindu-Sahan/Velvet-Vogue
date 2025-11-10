@@ -48,9 +48,10 @@
                             "Summer-Essentials Tee.jpg",
                             "Vital-Sculpt Bra.jpg"
                         ];
-
+                        
                         if (!empty($product_images)) {
                             foreach ($product_images as $image_file) {
+                                
                                 $name = htmlspecialchars(ucwords(str_replace(['-', '.jpg'], [' ', ''], $image_file)));
                               
                                 $image = 'assets/images/products/' . htmlspecialchars($image_file);
@@ -68,6 +69,8 @@
                             echo '<p>No products found.</p>';
                         }
                         ?>
+
+                        
                     </div>
                 </div>
             </div>
