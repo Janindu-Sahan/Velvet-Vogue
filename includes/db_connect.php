@@ -11,4 +11,8 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
+
+define('CURRENCY', 'Rs.');
+
+define('PRODUCT_IMG_PATH', 'assets/images/products/');
 ?>

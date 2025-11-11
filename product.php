@@ -1,4 +1,14 @@
-<?php include 'includes/db_connect.php'; ?>
+<?php
+include 'includes/db_connect.php';
+
+function resolveImagePath($image) {
+    if (empty($image)) return ;
+    if (preg_match('/^(https?:\/\/|assets\/)/i', $image)) return $image;
+    return 'assets/images/products/' . $image;
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +27,7 @@
                 <a href="index.php" class="logo">VELVET VOGUE</a>
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="index.php">HOME</a></li>
-                    <li><a href="shop.php" class="active">SHOP</a></li>
+                    <li><a href="shop.php">SHOP</a></li>
                     <li><a href="contact.php">CONTACT</a></li>
                     <li><a href="account.php">ACCOUNT</a></li>
                     <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
@@ -33,59 +43,84 @@
     <section class="product-section">
         <div class="container">
             <?php
+            $product = null;
+
             if (isset($_GET['slug'])) {
                 $slug = $_GET['slug'];
 
                 $stmt = $conn->prepare("SELECT p.*, c.name AS category_name 
                                         FROM products p 
                                         LEFT JOIN categories c ON p.category_id = c.id 
-                                        WHERE p.slug = ?");
+                                        WHERE p.slug = ? LIMIT 1");
                 $stmt->bind_param("s", $slug);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
                 if ($result && $result->num_rows > 0) {
                     $product = $result->fetch_assoc();
+
+                    // safe values
                     $name = htmlspecialchars($product['name']);
-                    $price = number_format($product['price'], 2);
+                    $price = number_format((float)$product['price'], 2);
                     $desc = nl2br(htmlspecialchars($product['description']));
                     $category = htmlspecialchars($product['category_name'] ?? 'Uncategorized');
 
-                    $imgFile = !empty($product['main_image']) ? htmlspecialchars($product['main_image']) : '';
-                    $imgPath = ($imgFile && file_exists(__DIR__ . '/assets/images/products/' . $imgFile))
-                        ? 'assets/images/products/' . $imgFile
-                        : 'assets/images/placeholder.jpg';
+                    // image path check
+                     $imgPath = resolveImagePath($product['main_image']);
+
+
+
+                  // stock (if exists)
+                    $stock = isset($product['stock']) ? (int)$product['stock'] : null;
+                    $maxQty = $stock && $stock > 0 ? $stock : 10;
             ?>
-                    <div class="product-detail">
-                        <div class="product-image-container">
-                            <img class="product-main-image" src="<?php echo $imgPath; ?>" alt="<?php echo $name; ?>">
-                        </div>
-                        <div class="product-info-container">
-                            <h2 class="product-title"><?php echo $name; ?></h2>
-                            <p class="category"><?php echo $category; ?></p>
-                            <p class="product-price-display">$<?php echo $price; ?></p>
-                            <p class="product-description"><?php echo $desc; ?></p>
-                            
-                            <!-- Add to Cart Form -->
-                            <form method="POST" action="cart.php">
-                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+<div class="product-details-container">
+    <div class="product-image">
+        <img src="<?php echo $imgPath; ?>" 
+             alt="<?php echo $name; ?>" 
+             id="productImage">
+    </div>
 
-                                <label for="size">Size:</label>
-                                <select name="size" id="size" required>
-                                    <option value="">Select Size</option>
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                </select>
+    <div class="product-info">
+        <h2 class="product-title"><?php echo $name; ?></h2>
+        <p class="product-price">Rs. <?php echo $price; ?></p>
+        <p class="product-description"><?php echo $desc; ?></p>
 
-                                <label for="quantity">Quantity:</label>
-                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="10" required>
+        <form id="addToCartForm">
+            <?php if (!empty($sizes)): ?>
+            <div class="size-group">
+                <label for="sizeSelect">Size:</label>
+                <select id="sizeSelect" name="size" class="size-dropdown" required>
+                    <option value="" disabled selected>Select Size</option>
+                    <?php foreach ($sizes as $sz): ?>
+                        <option value="<?php echo htmlspecialchars($sz); ?>"><?php echo htmlspecialchars($sz); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <?php else: ?>
+                <input type="hidden" name="size" value="">
+            <?php endif; ?>
 
-                                <button type="submit" class="btn">Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
+            <div class="quantity-group">
+                <label for="quantityInput">Quantity:</label>
+                <div class="quantity-controls">
+                    <button type="button" class="qty-btn minus" aria-label="Decrease">−</button>
+                    <input type="number" id="quantityInput" name="quantity" class="quantity-input" value="1" min="1" max="<?php echo (int)$maxQty; ?>" required>
+                    <button type="button" class="qty-btn plus" aria-label="Increase">+</button>
+                </div>
+                <?php if ($stock !== null): ?>
+                    <p class="stock-indicator"><?php echo $stock > 0 ? "{$stock} in stock" : "Out of stock"; ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="add-to-cart-section">
+                <button type="submit" id="addToCartBtn" class="btn add-to-cart-btn"<?php echo ($stock === 0 ? ' disabled' : ''); ?>>
+                    <?php echo ($stock === 0 ? 'OUT OF STOCK' : 'ADD TO CART'); ?>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
             <?php
                 } else {
                     echo "<p>Product not found.</p>";
@@ -98,7 +133,7 @@
         </div>
     </section>
 
-    <!-- Related Products Section -->
+    <!-- Related Products -->
     <?php if (!empty($product)): ?>
     <div class="products-area">
         <div class="container">
@@ -107,41 +142,38 @@
             </div>
             <div class="products-grid">
                 <?php
-                $category_id = $product['category_id'];
-                $current_product_id = $product['id'];
+                $category_id = $product['category_id'] ?? null;
+                $current_product_id = $product['id'] ?? null;
 
-                $stmt = $conn->prepare("SELECT p.*, c.name AS category_name 
-                                        FROM products p 
-                                        LEFT JOIN categories c ON p.category_id = c.id 
-                                        WHERE p.category_id = ? AND p.id != ? 
-                                        ORDER BY RAND() 
-                                        LIMIT 4");
-                $stmt->bind_param("ii", $category_id, $current_product_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
+                if ($category_id && $current_product_id) {
+                    $stmt = $conn->prepare("SELECT p.* FROM products p WHERE p.category_id = ? AND p.id != ? ORDER BY RAND() LIMIT 4");
+                    $stmt->bind_param("ii", $category_id, $current_product_id);
+                    $stmt->execute();
+                    $res = $stmt->get_result();
+                    if ($res && $res->num_rows > 0) {
+                        while ($row = $res->fetch_assoc()) {
+                            $rname = htmlspecialchars($row['name']);
+                            $rslug = urlencode($row['slug']);
+                            
+                       
+                            $rimagePath = resolveImagePath($row['main_image']);
 
-                if ($result && $result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        $rname = htmlspecialchars($row['name']);
-                        $rprice = number_format($row['price'], 2);
-                        $rslug = urlencode($row['slug']);
-                        $rimage = !empty($row['main_image']) ? htmlspecialchars($row['main_image']) : '';
-                        $rimagePath = ($rimage && file_exists(__DIR__ . '/assets/images/products/' . $rimage))
-                            ? 'assets/images/products/' . $rimage
-                            : 'assets/images/placeholder.jpg';
 
-                        echo '<article class="product-card">';
-                        echo '  <a href="product.php?slug=' . $rslug . '">';
-                        echo '      <img src="' . $rimagePath . '" alt="' . $rname . '" class="product-image" loading="lazy">';
-                        echo '      <h4 class="product-title">' . $rname . '</h4>';
-                        echo '      <p class="price">$' . $rprice . '</p>';
-                        echo '  </a>';
-                        echo '</article>';
+
+                            echo '<article class="product-card">';
+                            echo '  <a href="product.php?slug=' . $rslug . '">';
+                            echo '      <img src="' . $rimagePath . '" alt="' . $rname . '" class="product-image" loading="lazy">';
+                            echo '      <h4 class="product-title">' . $rname . '</h4>';
+                            echo '  </a>';
+                            echo '</article>';
+                        }
+                    } else {
+                        echo '<p>No related products found.</p>';
                     }
+                    $stmt->close();
                 } else {
                     echo '<p>No related products found.</p>';
                 }
-                $stmt->close();
                 ?>
             </div>
         </div>
@@ -176,6 +208,8 @@
         </div>
     </footer>
 
+    <script type="module" src="assets/js/main.js"></script>
     <script type="module" src="assets/js/product.js"></script>
+
 </body>
 </html>
