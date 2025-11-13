@@ -69,11 +69,21 @@ function resolveImagePath($image) {
                      $imgPath = resolveImagePath($product['main_image']);
 
 
+                    $sizes = [];
+                    if (!empty($product['sizes'])) {
+                        
+                        $sizes = array_map('trim', explode(',', $product['sizes']));
+                        
+                        $sizes = array_filter($sizes);
+                    }
 
-                  // stock (if exists)
+                    
                     $stock = isset($product['stock']) ? (int)$product['stock'] : null;
                     $maxQty = $stock && $stock > 0 ? $stock : 10;
-            ?>
+                     ?>
+
+
+
 <div class="product-details-container">
     <div class="product-image">
         <img src="<?php echo $imgPath; ?>" 
@@ -86,7 +96,7 @@ function resolveImagePath($image) {
         <p class="product-price">Rs. <?php echo $price; ?></p>
         <p class="product-description"><?php echo $desc; ?></p>
 
-        <form id="addToCartForm">
+<form id="addToCartForm">
             <?php if (!empty($sizes)): ?>
             <div class="size-group">
                 <label for="sizeSelect">Size:</label>
@@ -98,14 +108,14 @@ function resolveImagePath($image) {
                 </select>
             </div>
             <?php else: ?>
-                <input type="hidden" name="size" value="">
+                <input type="hidden" name="size" value="N/A">
             <?php endif; ?>
 
             <div class="quantity-group">
                 <label for="quantityInput">Quantity:</label>
                 <div class="quantity-controls">
                     <button type="button" class="qty-btn minus" aria-label="Decrease">−</button>
-                    <input type="number" id="quantityInput" name="quantity" class="quantity-input" value="1" min="1" max="<?php echo (int)$maxQty; ?>" required>
+                    <input  id="quantityInput" name="quantity" class="quantity-input" value="1" min="1" max="<?php echo (int)$maxQty; ?>" required>
                     <button type="button" class="qty-btn plus" aria-label="Increase">+</button>
                 </div>
                 <?php if ($stock !== null): ?>
@@ -119,6 +129,7 @@ function resolveImagePath($image) {
                 </button>
             </div>
         </form>
+
     </div>
 </div>
             <?php
