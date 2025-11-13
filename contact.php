@@ -13,13 +13,29 @@ session_start();
 </head>
 <body>
     
-
+<nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.php" class="logo">VELVET VOGUE</a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.php" class="active">HOME</a></li>
+                    <li><a href="shop.php">SHOP</a></li>
+                    <li><a href="contact.php">CONTACT</a></li>
+                    <li><a href="account.php">ACCOUNT</a></li>
+                    <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
     <section class="contact-section">
         <div class="container">
-            <h1 class="page-title">GET IN TOUCH</h1>
-            <p class="contact-subtitle">
-                Have a question? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-            </p>
+            <h1 class="page-title">GET IN TOUCH</h1><br>
 
             <div class="contact-layout">
                 <div class="contact-info">

@@ -22,10 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['product_id'])) {
     $stmt->close();
 
     if ($product) {
-        // Create unique cart key (product + size)
         $cartKey = $product_id . '-' . $size;
 
-        // If product already in cart, update quantity
         if (isset($_SESSION['cart'][$cartKey])) {
             $_SESSION['cart'][$cartKey]['quantity'] += $quantity;
         } else {
@@ -33,14 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['product_id'])) {
                 'id' => $product['id'],
                 'name' => $product['name'],
                 'price' => $product['price'],
-                'image' => $product['image'],
+                // Use the image filename from DB and prepend the product image path constant
+                'image' => (defined('PRODUCT_IMG_PATH') ? PRODUCT_IMG_PATH : '') . $product['image'],
                 'size' => $size,
                 'quantity' => $quantity
             ];
         }
     }
 
-    // Redirect to cart page after adding
     header("Location: cart.php");
     exit();
 }
@@ -73,7 +71,9 @@ if (isset($_GET['remove'])) {
                     <li><a href="shop.php">SHOP</a></li>
                     <li><a href="contact.php">CONTACT</a></li>
                     <li><a href="account.php">ACCOUNT</a></li>
-                    <li><a href="cart.php" class="cart-link active">CART <span class="cart-count"><?php echo count($_SESSION['cart']); ?></span></a></li>
+                    <li><a href="cart.php" class="cart-link active">CART 
+                        <span class="cart-count"><?php echo count($_SESSION['cart']); ?></span>
+                    </a></li>
                 </ul>
                 <div class="hamburger" id="hamburger">
                     <span></span><span></span><span></span>
@@ -108,7 +108,8 @@ if (isset($_GET['remove'])) {
                         ?>
                         <tr>
                             <td class="cart-product">
-                                <img src="assets/images/<?php echo htmlspecialchars($item['image']); ?>" alt="">
+                                <!-- ✅ Fixed image path -->
+                                <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
                                 <span><?php echo htmlspecialchars($item['name']); ?></span>
                             </td>
                             <td><?php echo htmlspecialchars($item['size']); ?></td>

@@ -134,62 +134,7 @@
         </div>
     </section>
 
-    <div class="modal" id="productModal">
-        <div class="modal-content">
-            <span class="modal-close" id="productModalClose">&times;</span>
-            <h2 id="productModalTitle">Add Product</h2>
-            <form id="productForm">
-                <input type="hidden" id="productId">
-                <div class="form-group">
-                    <label for="productName">Product Name *</label>
-                    <input type="text" id="productName" required>
-                </div>
-                <div class="form-group">
-                    <label for="productDescription">Description *</label>
-                    <textarea id="productDescription" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productPrice">Price *</label>
-                    <input type="number" id="productPrice" step="0.01" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="productCategory">Category *</label>
-                    <select id="productCategory" required></select>
-                </div>
-                <div class="form-group">
-                    <label for="productGender">Gender *</label>
-                    <select id="productGender" required>
-                        <option value="Men">Men</option>
-                        <option value="Women">Women</option>
-                        <option value="Unisex">Unisex</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="productSizes">Sizes (comma-separated, e.g., S,M,L,XL) *</label>
-                    <input type="text" id="productSizes" required>
-                </div>
-                <div class="form-group">
-                    <label for="productColors">Colors (comma-separated, e.g., Black,White) *</label>
-                    <input type="text" id="productColors" required>
-                </div>
-                <div class="form-group">
-                    <label for="productImageUrl">Image URL (Pexels link) *</label>
-                    <input type="url" id="productImageUrl" required>
-                </div>
-                <div class="form-group">
-                    <label for="productStock">Stock *</label>
-                    <input type="number" id="productStock" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="productFeatured">
-                        Featured Product
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">SAVE PRODUCT</button>
-            </form>
-        </div>
-    </div>
+
 
     <footer class="footer">
         <div class="container">

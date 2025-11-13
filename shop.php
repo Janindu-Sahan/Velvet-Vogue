@@ -38,15 +38,15 @@
                         <?php
                         $product_images = [
                             "airbond-bra.jpg",
-                            "Classic-Twil-Cargo- Pant.jpg",
-                            "Court-line-Wrap Dress .jpg",
-                            "Essence-Washed Zip-Up Hoodie.jpg",
-                            "Essence-Washed- Cuffed-Jogger (Unisex).jpg",
-                            "Essential-Cut-Off- Crop.jpg",
-                            "Legacy-Game- Tank .jpg",
-                            "px -tee.jpg",
-                            "Summer-Essentials Tee.jpg",
-                            "Vital-Sculpt Bra.jpg"
+                            "Classic-Twil-Cargo-Pant.jpg",
+                            "Court-line-Wrap-Dress.jpg",
+                            "Essence-Washed-Zip-Up-Hoodie.jpg",
+                            "Essence-Washed-Cuffed-Jogger-(Unisex).jpg",
+                            "Essential-Cut-Off-Crop.jpg",
+                            "Legacy-Game-Tank.jpg",
+                            "px-tee.jpg",
+                            "Summer-Essentials-Tee.jpg",
+                            "Vital-Sculpt-Bra.jpg"
                         ];
                         
                         if (!empty($product_images)) {
@@ -105,7 +105,7 @@
         </div>
     </footer>
 
-    <script type="module" src="assets/js/main.js"></script>
-    <script type="module" src="assets/js/shop.js"></script>
+    <script  src="assets/js/main.js"></script>
+    <script src="assets/js/shop.js"></script>
 </body>
 </html>
