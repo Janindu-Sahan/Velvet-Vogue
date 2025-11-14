@@ -42,6 +42,32 @@ export async function updateCartCount() {
 }
 
 export function showNotification(message, type = 'success') {
+    // Define colors for different notification types
+    const colors = {
+        success: {
+            bg: '#d4edda',
+            text: '#155724',
+            border: '#c3e6cb'
+        },
+        error: {
+            bg: '#f8d7da',
+            text: '#721c24',
+            border: '#f5c6cb'
+        },
+        warning: {
+            bg: '#fff3cd',
+            text: '#856404',
+            border: '#ffeeba'
+        },
+        info: {
+            bg: '#d1ecf1',
+            text: '#0c5460',
+            border: '#bee5eb'
+        }
+    };
+
+    const colorScheme = colors[type] || colors.success;
+
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
@@ -50,14 +76,16 @@ export function showNotification(message, type = 'success') {
         top: 100px;
         right: 20px;
         padding: 16px 24px;
-        background-color: ${type === 'success' ? '#d4edda' : '#f8d7da'};
-        color: ${type === 'success' ? '#155724' : '#721c24'};
-        border: 1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'};
+        background-color: ${colorScheme.bg};
+        color: ${colorScheme.text};
+        border: 1px solid ${colorScheme.border};
         border-radius: 4px;
         z-index: 10000;
         animation: slideIn 0.3s ease;
         font-weight: 600;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 400px;
+        word-wrap: break-word;
     `;
 
     document.body.appendChild(notification);

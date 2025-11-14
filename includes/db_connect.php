@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 $dbname = "velvet-vogue"; // change to your database name
 
 // Create connection

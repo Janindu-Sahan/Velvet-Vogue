@@ -1,6 +1,12 @@
+<?php
+session_start();
+include 'includes/db_connect.php';
 
-<?php include 'includes/db_connect.php'; ?>
-
+// Initialize cart session
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +26,7 @@
                     <li><a href="shop.php">SHOP</a></li>
                     <li><a href="contact.php">CONTACT</a></li>
                     <li><a href="account.php">ACCOUNT</a></li>
-                    <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
+                    <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount"><?php echo count($_SESSION['cart']); ?></span></a></li>
                 </ul>
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -43,12 +49,42 @@
         <div class="container">
             <h2 class="section-title">FEATURED COLLECTIONS</h2>
             <div class="featured-grid" id="featuredProducts">
-                <img src="./assets/images/products/px-tee.jpg" alt="Men's tee 1">
-                <img src="./assets/images/products/Summer-Essentials-Tee.jpg" alt="Womens tee 1">
-                <img src="./assets/images/products/Legacy-Game-Tank.jpg" alt="Men's tee 2">
-                <img src="./assets/images/products/Court-line-Wrap-Dress.jpg" alt="Womens tee 2">
-                <img src="./assets/images/products/Essence-Washed-Cuffed-Jogger-(Unisex).jpg" alt="Womens tee 2">
-                <img src="./assets/images/products/airbond-bra.jpg" alt="Womens tee 2">
+                <?php
+                // Get featured products from database
+                $featured_query = "SELECT * FROM products WHERE featured = 1 ORDER BY created_at DESC LIMIT 6";
+                $featured_result = $conn->query($featured_query);
+                
+                if ($featured_result && $featured_result->num_rows > 0) {
+                    while ($product = $featured_result->fetch_assoc()) {
+                        $name = htmlspecialchars($product['name']);
+                        $slug = htmlspecialchars($product['slug']);
+                        
+                        // Determine image path
+                        $image = $product['main_image'] ?? $product['image'] ?? '';
+                        if (!empty($image)) {
+                            if (!preg_match('/^(https?:\/\/|assets\/)/i', $image)) {
+                                $image = PRODUCT_IMG_PATH . $image;
+                            }
+                        } else {
+                            $image = 'assets/images/products/placeholder.jpg';
+                        }
+                        
+                        echo '<a href="product.php?slug=' . $slug . '">';
+                        echo '  <img src="' . htmlspecialchars($image) . '" alt="' . $name . '">';
+                        echo '</a>';
+                    }
+                } else {
+                    // Fallback to static images if no featured products in database
+                    ?>
+                    <img src="./assets/images/products/px-tee.jpg" alt="Men's tee 1">
+                    <img src="./assets/images/products/Summer-Essentials-Tee.jpg" alt="Womens tee 1">
+                    <img src="./assets/images/products/Legacy-Game-Tank.jpg" alt="Men's tee 2">
+                    <img src="./assets/images/products/Court-line-Wrap-Dress.jpg" alt="Womens tee 2">
+                    <img src="./assets/images/products/Essence-Washed-Cuffed-Jogger-(Unisex).jpg" alt="Womens tee 2">
+                    <img src="./assets/images/products/airbond-bra.jpg" alt="Womens tee 2">
+                    <?php
+                }
+                ?>
             </div>
         </div>
     </section>

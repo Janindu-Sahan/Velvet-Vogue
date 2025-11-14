@@ -24,6 +24,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['product_id'])) {
     if ($product) {
         $cartKey = $product_id . '-' . $size;
 
+        // Resolve image path
+        $imagePath = $product['image'];
+        if (!preg_match('/^(https?:\/\/|assets\/)/i', $imagePath)) {
+            $imagePath = 'assets/images/products/' . $imagePath;
+        }
+
         if (isset($_SESSION['cart'][$cartKey])) {
             $_SESSION['cart'][$cartKey]['quantity'] += $quantity;
         } else {
@@ -31,14 +37,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['product_id'])) {
                 'id' => $product['id'],
                 'name' => $product['name'],
                 'price' => $product['price'],
-                // Use the image filename from DB and prepend the product image path constant
-                'image' => (defined('PRODUCT_IMG_PATH') ? PRODUCT_IMG_PATH : '') . $product['image'],
+                'image' => $imagePath,
                 'size' => $size,
                 'quantity' => $quantity
             ];
         }
     }
 
+    header("Location: cart.php");
+    exit();
+}
+
+// Update quantity in cart
+if (isset($_GET['update']) && isset($_GET['key']) && isset($_GET['qty'])) {
+    $updateKey = $_GET['key'];
+    $newQty = max(1, (int)$_GET['qty']);
+    
+    if (isset($_SESSION['cart'][$updateKey])) {
+        $_SESSION['cart'][$updateKey]['quantity'] = $newQty;
+    }
     header("Location: cart.php");
     exit();
 }
@@ -108,15 +125,20 @@ if (isset($_GET['remove'])) {
                         ?>
                         <tr>
                             <td class="cart-product">
-                                <!-- ✅ Fixed image path -->
                                 <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
                                 <span><?php echo htmlspecialchars($item['name']); ?></span>
                             </td>
                             <td><?php echo htmlspecialchars($item['size']); ?></td>
                             <td>$<?php echo number_format($item['price'], 2); ?></td>
-                            <td><?php echo (int)$item['quantity']; ?></td>
+                            <td>
+                                <div class="cart-qty-controls">
+                                    <button class="qty-btn" onclick="updateQty('<?php echo $key; ?>', <?php echo max(1, $item['quantity'] - 1); ?>)">-</button>
+                                    <span class="qty-display"><?php echo (int)$item['quantity']; ?></span>
+                                    <button class="qty-btn" onclick="updateQty('<?php echo $key; ?>', <?php echo $item['quantity'] + 1; ?>)">+</button>
+                                </div>
+                            </td>
                             <td>$<?php echo number_format($subtotal, 2); ?></td>
-                            <td><a href="cart.php?remove=<?php echo urlencode($key); ?>" class="remove-btn">✖</a></td>
+                            <td><a href="cart.php?remove=<?php echo urlencode($key); ?>" class="remove-btn" onclick="return confirm('Remove this item from cart?')">✖</a></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -124,7 +146,7 @@ if (isset($_GET['remove'])) {
 
                 <div class="cart-summary">
                     <h3>Total: $<?php echo number_format($total, 2); ?></h3>
-                    <button class="btn btn-primary">Proceed to Checkout</button>
+                    <a href="checkout.php" class="btn btn-primary" style="text-decoration: none; display: inline-block; text-align: center;">Proceed to Checkout</a>
                 </div>
             <?php else: ?>
                 <p>Your cart is currently empty. <a href="shop.php">Shop now</a>.</p>
@@ -159,5 +181,25 @@ if (isset($_GET['remove'])) {
             </div>
         </div>
     </footer>
+
+    <script>
+        // Update cart quantity
+        function updateQty(key, qty) {
+            if (qty < 1) return;
+            window.location.href = `cart.php?update=1&key=${encodeURIComponent(key)}&qty=${qty}`;
+        }
+
+        // Hamburger menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

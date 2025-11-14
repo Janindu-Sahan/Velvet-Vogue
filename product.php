@@ -1,5 +1,11 @@
 <?php
+session_start();
 include 'includes/db_connect.php';
+
+// Initialize cart session
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
 
 function resolveImagePath($image) {
     if (empty($image)) return ;
@@ -30,7 +36,7 @@ function resolveImagePath($image) {
                     <li><a href="shop.php">SHOP</a></li>
                     <li><a href="contact.php">CONTACT</a></li>
                     <li><a href="account.php">ACCOUNT</a></li>
-                    <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
+                    <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount"><?php echo count($_SESSION['cart']); ?></span></a></li>
                 </ul>
                 <div class="hamburger" id="hamburger">
                     <span></span><span></span><span></span>
@@ -96,7 +102,8 @@ function resolveImagePath($image) {
         <p class="product-price">Rs. <?php echo $price; ?></p>
         <p class="product-description"><?php echo $desc; ?></p>
 
-<form id="addToCartForm">
+<form id="addToCartForm" action="cart.php" method="POST">
+            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
             <?php if (!empty($sizes)): ?>
             <div class="size-group">
                 <label for="sizeSelect">Size:</label>
@@ -115,7 +122,7 @@ function resolveImagePath($image) {
                 <label for="quantityInput">Quantity:</label>
                 <div class="quantity-controls">
                     <button type="button" class="qty-btn minus" aria-label="Decrease">−</button>
-                    <input  id="quantityInput" name="quantity" class="quantity-input" value="1" min="1" max="<?php echo (int)$maxQty; ?>" required>
+                    <input type="number" id="quantityInput" name="quantity" class="quantity-input" value="1" min="1" max="<?php echo (int)$maxQty; ?>" required>
                     <button type="button" class="qty-btn plus" aria-label="Increase">+</button>
                 </div>
                 <?php if ($stock !== null): ?>

@@ -1,14 +1,13 @@
 // product.js – PHP session version
 
+import { showNotification } from './main.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     const sizeSelect = document.getElementById("sizeSelect");
     const qtyInput = document.getElementById("quantityInput");
-    // try IDs first, fall back to class selectors to match markup
-    const increaseBtn = document.getElementById("increaseQty") || document.querySelector(".qty-btn.plus");
-    const decreaseBtn = document.getElementById("decreaseQty") || document.querySelector(".qty-btn.minus");
-    const addToCartBtn = document.getElementById("addToCartBtn");
-
-    let quantity = 1;
+    const increaseBtn = document.querySelector(".qty-btn.plus");
+    const decreaseBtn = document.querySelector(".qty-btn.minus");
+    const addToCartForm = document.getElementById("addToCartForm");
 
     // Size selection
     if (sizeSelect) {
@@ -18,53 +17,48 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Quantity controls
-    if (increaseBtn && decreaseBtn) {
+    if (increaseBtn && qtyInput) {
         increaseBtn.addEventListener("click", () => {
-            quantity++;
-            qtyInput.value = quantity;
-        });
-
-        decreaseBtn.addEventListener("click", () => {
-            if (quantity > 1) {
-                quantity--;
-                qtyInput.value = quantity;
+            const currentVal = parseInt(qtyInput.value) || 1;
+            const maxVal = parseInt(qtyInput.getAttribute("max")) || 999;
+            if (currentVal < maxVal) {
+                qtyInput.value = currentVal + 1;
             }
         });
     }
 
-    // Add to Cart
-    if (addToCartBtn) {
-        addToCartBtn.addEventListener("click", () => {
-            const size = sizeSelect ? sizeSelect.value : "";
-            const productId = addToCartBtn.dataset.id;
+    if (decreaseBtn && qtyInput) {
+        decreaseBtn.addEventListener("click", () => {
+            const currentVal = parseInt(qtyInput.value) || 1;
+            const minVal = parseInt(qtyInput.getAttribute("min")) || 1;
+            if (currentVal > minVal) {
+                qtyInput.value = currentVal - 1;
+            }
+        });
+    }
 
-            // Require size only if a size dropdown exists on the page
-            if (sizeSelect && !size) {
-                alert("Please select a size before adding to cart.");
-                return;
+    // Form submission validation
+    if (addToCartForm) {
+        addToCartForm.addEventListener("submit", (e) => {
+            // Validate size selection if size dropdown exists
+            if (sizeSelect && !sizeSelect.value) {
+                e.preventDefault();
+                showNotification("Please select a size before adding to cart.", "error");
+                sizeSelect.focus();
+                return false;
             }
 
-            const formData = new FormData();
-            formData.append("product_id", productId);
-            formData.append("size", size);
-            formData.append("quantity", quantity);
+            // Validate quantity
+            const quantity = parseInt(qtyInput.value) || 1;
+            if (quantity < 1) {
+                e.preventDefault();
+                showNotification("Please enter a valid quantity.", "error");
+                qtyInput.focus();
+                return false;
+            }
 
-            fetch("cart.php", {
-                method: "POST",
-                body: formData
-            })
-                .then((res) => {
-                    if (res.ok) {
-                        window.location.href = "cart.php";
-                    } else {
-                        alert("Failed to add item to cart. Please try again.");
-                    }
-                })
-                .catch((err) => {
-                    console.error("Error:", err);
-                    alert("Error adding to cart.");
-                });
+            // Form will submit normally to cart.php via POST
+            return true;
         });
     }
 });
-   
