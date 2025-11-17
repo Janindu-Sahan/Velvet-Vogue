@@ -163,7 +163,7 @@ function resolveImagePath($image) {
                             echo '  <a href="product.php?slug=' . urlencode($slug) . '">';
                             echo '      <img src="' . $image . '" alt="' . $name . '" class="product-image" loading="lazy">';
                             echo '      <h4 class="product-title">' . $name . '</h4>';
-                            echo '      <p class="product-price">$' . $price . '</p>';
+                            echo '      <p class="product-price">Rs.' . $price . '</p>';
                             if ($stock <= 0) {
                                 echo '      <p class="product-stock out-of-stock">Out of Stock</p>';
                             }

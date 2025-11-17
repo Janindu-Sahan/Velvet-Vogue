@@ -1,7 +1,3 @@
-<?php
-// Optional PHP logic can go here (e.g., session handling, login check, etc.)
-?>
-
 <?php include 'includes/db_connect.php'; ?>
 
 <!DOCTYPE html>
@@ -14,6 +10,8 @@
     <link rel="stylesheet" href="assets/css/account.css">
 </head>
 <body>
+
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-wrapper">
@@ -23,19 +21,22 @@
                     <li><a href="shop.php">SHOP</a></li>
                     <li><a href="contact.php">CONTACT</a></li>
                     <li><a href="account.php" class="active">ACCOUNT</a></li>
-                    <li><a href="cart.php" class="cart-link">CART <span class="cart-count" id="cartCount">0</span></a></li>
+                    <li><a href="cart.php" class="cart-link">
+                        CART <span class="cart-count" id="cartCount">0</span>
+                    </a></li>
                 </ul>
                 <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- ACCOUNT SECTION -->
     <section class="account-section">
         <div class="container">
+
+            <!-- AUTH SECTION (Login/Register) -->
             <div id="authContainer">
                 <h1 class="page-title">MY ACCOUNT</h1>
 
@@ -44,36 +45,38 @@
                     <button class="auth-tab" data-tab="register">REGISTER</button>
                 </div>
 
+                <!-- LOGIN TAB -->
                 <div class="tab-content active" id="loginTab">
                     <form id="loginForm">
                         <div class="form-group">
-                            <label for="loginEmail">Email *</label>
+                            <label>Email *</label>
                             <input type="email" id="loginEmail" required>
                         </div>
                         <div class="form-group">
-                            <label for="loginPassword">Password *</label>
+                            <label>Password *</label>
                             <input type="password" id="loginPassword" required>
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">LOGIN</button>
                     </form>
                 </div>
 
+                <!-- REGISTER TAB -->
                 <div class="tab-content" id="registerTab">
                     <form id="registerForm">
                         <div class="form-group">
-                            <label for="registerName">Full Name *</label>
+                            <label>Full Name *</label>
                             <input type="text" id="registerName" required>
                         </div>
                         <div class="form-group">
-                            <label for="registerEmail">Email *</label>
+                            <label>Email *</label>
                             <input type="email" id="registerEmail" required>
                         </div>
                         <div class="form-group">
-                            <label for="registerPassword">Password *</label>
+                            <label>Password *</label>
                             <input type="password" id="registerPassword" required minlength="6">
                         </div>
                         <div class="form-group">
-                            <label for="confirmPassword">Confirm Password *</label>
+                            <label>Confirm Password *</label>
                             <input type="password" id="confirmPassword" required minlength="6">
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">REGISTER</button>
@@ -81,21 +84,25 @@
                 </div>
             </div>
 
-            <div id="dashboardContainer" style="display: none;">
+            <!-- DASHBOARD SECTION -->
+            <div id="dashboardContainer" style="display:none;">
                 <h1 class="page-title">MY DASHBOARD</h1>
 
                 <div class="dashboard-header">
-                    <div class="user-info" id="userInfo"></div>
+                    <div id="userInfo"></div>
                     <button class="btn btn-outline" id="logoutBtn">LOGOUT</button>
                 </div>
 
                 <div class="dashboard-content">
+
+                    <!-- LEFT SIDE BUTTONS -->
                     <div class="dashboard-nav">
                         <button class="dashboard-tab active" data-tab="orders">MY ORDERS</button>
                         <button class="dashboard-tab" data-tab="profile">PROFILE</button>
-                        <button class="dashboard-tab admin-only" data-tab="admin" style="display: none;">ADMIN PANEL</button>
+                        <button class="dashboard-tab admin-only" data-tab="admin" style="display:none;">ADMIN PANEL</button>
                     </div>
 
+                    <!-- ORDERS PANEL -->
                     <div class="dashboard-panel active" id="ordersPanel">
                         <h2>My Orders</h2>
                         <div id="ordersList">
@@ -103,21 +110,23 @@
                         </div>
                     </div>
 
+                    <!-- PROFILE PANEL -->
                     <div class="dashboard-panel" id="profilePanel">
                         <h2>My Profile</h2>
                         <form id="profileForm">
                             <div class="form-group">
-                                <label for="profileName">Full Name</label>
+                                <label>Full Name</label>
                                 <input type="text" id="profileName" required>
                             </div>
                             <div class="form-group">
-                                <label for="profileEmail">Email</label>
+                                <label>Email</label>
                                 <input type="email" id="profileEmail" disabled>
                             </div>
                             <button type="submit" class="btn btn-primary">UPDATE PROFILE</button>
                         </form>
                     </div>
 
+                    <!-- ADMIN PANEL -->
                     <div class="dashboard-panel" id="adminPanel">
                         <h2>Admin Panel - Manage Products</h2>
 
@@ -128,14 +137,15 @@
                         <div id="productsManagement">
                             <div class="loading">Loading products...</div>
                         </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-
-
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -143,6 +153,7 @@
                     <h3>VELVET VOGUE</h3>
                     <p>Redefining luxury fashion for modern individuals.</p>
                 </div>
+
                 <div class="footer-section">
                     <h4>QUICK LINKS</h4>
                     <ul>
@@ -151,19 +162,23 @@
                         <li><a href="account.php">My Account</a></li>
                     </ul>
                 </div>
+
                 <div class="footer-section">
                     <h4>CONTACT</h4>
                     <p>Email: info@velvetvogue.com</p>
                     <p>Phone: +1 (555) 123-4567</p>
                 </div>
             </div>
+
             <div class="footer-bottom">
                 <p>&copy; <?php echo date("Y"); ?> Velvet Vogue. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- JS FILES -->
     <script type="module" src="assets/js/main.js"></script>
     <script type="module" src="assets/js/account.js"></script>
+
 </body>
 </html>
