@@ -122,7 +122,7 @@ function resolveImagePath($image) {
                 <label for="quantityInput">Quantity:</label>
                 <div class="quantity-controls">
                     <button type="button" class="qty-btn minus" aria-label="Decrease">−</button>
-                    <input type="number" id="quantityInput" name="quantity" class="quantity-input" value="1" min="1" max="<?php echo (int)$maxQty; ?>" required>
+                    <input id="quantityInput" name="quantity" class="quantity-input" value="1" min="1" max="<?php echo (int)$maxQty; ?>" required>
                     <button type="button" class="qty-btn plus" aria-label="Increase">+</button>
                 </div>
                 <?php if ($stock !== null): ?>
